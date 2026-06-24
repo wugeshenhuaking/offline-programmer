@@ -13,7 +13,7 @@
 
 #define DAP_DEFAULT_PORT 1 ///< Default JTAG/SWJ Port Mode: 1 = SWD, 2 = JTAG.
 
-#define DAP_DEFAULT_SWJ_CLOCK 1000000 ///< Default SWD/JTAG clock frequency in Hz.  在FS模式下，最多只能1M
+#define DAP_DEFAULT_SWJ_CLOCK 10000000 ///< Default SWD/JTAG clock frequency in Hz
 
 /// Maximum Package Size for Command and Response data.
 #define DAP_PACKET_SIZE 64 ///< USB: 64 = Full-Speed, 1024 = High-Speed.
@@ -51,9 +51,7 @@ DAP Hardware I/O Pin Access Functions
 
 // Configure DAP I/O pins ------------------------------
 
-#define GPIO_INIT(port, data) GPIO_Init(port, (GPIO_InitTypeDef *)&data)
 #define PIN_MODE_MASK(pin) (((uint32_t)0x0F) << ((pin) << 2))
-#define PIN_MODE(mode, pin) (((uint32_t)mode) << ((pin) << 2))
 #define PIN_MASK(pin) (((uint16_t)0x01) << (pin))
 
 #define PIN_nRESET PIN_MASK(PIN_nRESET_PIN)
@@ -105,68 +103,30 @@ static __inline void PIN_SWDIO_OUT(uint32_t bit)
         PIN_SWDIO_TMS_PORT->clr = PIN_SWDIO_TMS;
 }
 
-//	For fast switch between input and output mode
-//	without GPIO_Init call
-#if (PIN_SWDIO_TMS_PIN >= 8)
-#define PIN_SWDIO_TMS_OUT_DISABLE()                                                                                    \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        PIN_SWDIO_TMS_PORT->CRH =                                                                                      \
-            (PIN_SWDIO_TMS_PORT->CRH & ~PIN_MODE_MASK(PIN_SWDIO_TMS_PIN - 8)) | PIN_MODE(0x8, PIN_SWDIO_TMS_PIN - 8);  \
-        PIN_SWDIO_TMS_PORT->BSRR = PIN_SWDIO_TMS;                                                                      \
-    } while (0)
-
-#define PIN_SWDIO_TMS_OUT_ENABLE()                                                                                     \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        PIN_SWDIO_TMS_PORT->CRH =                                                                                      \
-            (PIN_SWDIO_TMS_PORT->CRH & ~PIN_MODE_MASK(PIN_SWDIO_TMS_PIN - 8)) | PIN_MODE(0x3, PIN_SWDIO_TMS_PIN - 8);  \
-        PIN_SWDIO_TMS_PORT->BRR = PIN_SWDIO_TMS;                                                                       \
-    } while (0)
-#else
-#define PIN_SWDIO_TMS_OUT_DISABLE()                                                                                    \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        PIN_SWDIO_TMS_PORT->cfglr =                                                                                      \
-            (PIN_SWDIO_TMS_PORT->cfglr & ~PIN_MODE_MASK(PIN_SWDIO_TMS_PIN)) | PIN_MODE(0x8, PIN_SWDIO_TMS_PIN);          \
-        PIN_SWDIO_TMS_PORT->scr = PIN_SWDIO_TMS;                                                                      \
-    } while (0)
-
-#define PIN_SWDIO_TMS_OUT_ENABLE()                                                                                     \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        PIN_SWDIO_TMS_PORT->cfglr =                                                                                      \
-            (PIN_SWDIO_TMS_PORT->cfglr & ~PIN_MODE_MASK(PIN_SWDIO_TMS_PIN)) | PIN_MODE(0x3, PIN_SWDIO_TMS_PIN);          \
-        PIN_SWDIO_TMS_PORT->clr = PIN_SWDIO_TMS;                                                                       \
-    } while (0)
-
-#endif
+// AT32 GPIO nibble values for SWDIO:
+// output push-pull, stronger drive = 0x1
+// input with pull-up              = 0x8
+#define PIN_SWDIO_OUTPUT_CFG 0x1U
+#define PIN_SWDIO_INPUT_CFG  0x8U
 
 static __inline void PIN_SWDIO_OUT_ENABLE(void)
 {
-    gpio_init_type gpio_init_struct;
+    uint32_t cfglr = PIN_SWDIO_TMS_PORT->cfglr;
 
-    gpio_default_para_init(&gpio_init_struct);
-
-    gpio_init_struct.gpio_pins = PIN_SWDIO_TMS;
-    gpio_init_struct.gpio_out_type = GPIO_OUTPUT_OPEN_DRAIN;
-    gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-    gpio_init_struct.gpio_pull = GPIO_PULL_UP;
-    gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
-
-    gpio_init(PIN_SWDIO_TMS_PORT, &gpio_init_struct);
+    cfglr &= ~PIN_MODE_MASK(PIN_SWDIO_TMS_PIN);
+    cfglr |= (PIN_SWDIO_OUTPUT_CFG << (PIN_SWDIO_TMS_PIN << 2));
+    PIN_SWDIO_TMS_PORT->cfglr = cfglr;
 }
-static __inline void PIN_SWDIO_OUT_DISABLE(void) 
-{ 
-    gpio_init_type gpio_init_struct;
 
-    gpio_default_para_init(&gpio_init_struct);
+static __inline void PIN_SWDIO_OUT_DISABLE(void)
+{
+    uint32_t cfglr = PIN_SWDIO_TMS_PORT->cfglr;
 
-    gpio_init_struct.gpio_pins = PIN_SWDIO_TMS;
-    gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
-    gpio_init_struct.gpio_pull = GPIO_PULL_UP;
-
-    gpio_init(PIN_SWDIO_TMS_PORT, &gpio_init_struct);
+    // Input pull-up selection depends on the output data latch level.
+    PIN_SWDIO_TMS_PORT->scr = PIN_SWDIO_TMS;
+    cfglr &= ~PIN_MODE_MASK(PIN_SWDIO_TMS_PIN);
+    cfglr |= (PIN_SWDIO_INPUT_CFG << (PIN_SWDIO_TMS_PIN << 2));
+    PIN_SWDIO_TMS_PORT->cfglr = cfglr;
 }
 
 // nTRST Pin I/O -------------------------------------------

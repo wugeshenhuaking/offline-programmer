@@ -97,8 +97,8 @@ void SWD_PORT_RCC_INIT(void)
 // SWD 引脚: 推挽输出, 50MHz, 无上下拉
  gpio_init_type INIT_SWDIO_PINS = {
     PIN_SWDIO_TMS,
-    GPIO_OUTPUT_OPEN_DRAIN,
-    GPIO_PULL_UP,
+    GPIO_OUTPUT_PUSH_PULL,
+    GPIO_PULL_NONE,
     GPIO_MODE_OUTPUT,
     GPIO_DRIVE_STRENGTH_STRONGER
 };
@@ -1129,7 +1129,7 @@ void DAP_Setup(void)
 {
     // Default settings
     DAP_Data.debug_port = 0U;
-    DAP_Data.fast_clock = 0U;
+    DAP_Data.fast_clock = 1U;
     DAP_Data.clock_delay = CLOCK_DELAY(DAP_DEFAULT_SWJ_CLOCK);
 //      DAP_Data.clock_delay = 100;
     DAP_Data.transfer.idle_cycles = 0U;

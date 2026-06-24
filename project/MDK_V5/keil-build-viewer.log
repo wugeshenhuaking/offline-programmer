@@ -34,7 +34,7 @@
 
 [region info]
 [load region] LR_IROM1
-	[execution region] ER_IROM1, 0x08000000, 0x00100000, 0x0003CD94 [memory type] 2 [memory ID] 3
+	[execution region] ER_IROM1, 0x08000000, 0x00100000, 0x0003D18C [memory type] 2 [memory ID] 3
 
 	[execution region] RW_IRAM1, 0x20000000, 0x00018000, 0x0000D6A8 [memory type] 1 [memory ID] 2
 		[ZI block] addr: 0x20000160, size: 0x0000D548 (54600)
@@ -171,7 +171,7 @@
 
 [record region info]
 [load region] LR_IROM1
-	[execution region] ER_IROM1, 0x08000000, 0x00100000, 0x0003CD94 [type] 2 [ID] 3
+	[execution region] ER_IROM1, 0x08000000, 0x00100000, 0x0003D18C [type] 2 [ID] 3
 	[execution region] RW_IRAM1, 0x20000000, 0x00018000, 0x0000D6A8 [type] 1 [ID] 2
 ---------------------------------------------------------------------------------------------------------------------------
                                FILE(s)                              |         RAM (byte)       |       FLASH (byte)       |
@@ -209,7 +209,7 @@
 ../../middlewares/freertos/source/queue.c():                        |          64              |        3676              |
 ..\src\rtc.c():                                                     |          10              |         790              |
 .\startup_at32f403a_407.s():                                        |        1024              |         424              |
-..\..\DAP\SW_DP.c():                                                |           0              |        3660              |
+..\..\DAP\SW_DP.c():                                                |           0              |        4676              |
 ..\..\DAP_Config\SWD_flash.c():                                     |           0              |         374              |
 ..\..\DAP_Config\SWD_host.c():                                      |           8              |        4318              |
 ..\..\libraries\cmsis\cm4\device_support\system_at32f403a_407.c():  |           4              |         602              |
@@ -236,11 +236,11 @@ LR_IROM1
                 RW_IRAM1  [0x20000000]|¡ö¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ_______________________| (  53.6 KB /  96.0 KB )  55.9%  
  
         FLASH 1           [0x08000000 | 0x00100000 (1048576)]
-                ER_IROM1  [0x08000000]|¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö_______________________________________| ( 243.3 KB /   1.0 MB )  23.8%  
+                ER_IROM1  [0x08000000]|¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö_______________________________________| ( 244.3 KB /   1.0 MB )  23.9%  
  
 [htm file path] D:\CodeProjects\AT32IDE_Proj\learn_w25q64\project\MDK_V5\objects\learn_w25q64.htm
 Maximum Stack Usage =       2236 bytes + Unknown(Cycles, Untraceable Function Pointers)
  
 =============================================================================================================================
 
-run time: 0.236 s
+run time: 0.337 s

@@ -275,6 +275,25 @@ static __attribute__((always_inline)) void PIN_DELAY_FAST(void)
 #endif
 }
 
+static const uint8_t ParityTable256[256] = {
+#define P2(n) n, n ^ 1U, n ^ 1U, n
+#define P4(n) P2(n), P2((n) ^ 1U), P2((n) ^ 1U), P2(n)
+#define P6(n) P4(n), P4((n) ^ 1U), P4((n) ^ 1U), P4(n)
+    P6(0U), P6(1U), P6(1U), P6(0U)
+};
+
+static __attribute__((always_inline)) uint8_t GetParity(uint32_t data)
+{
+    data ^= data >> 16;
+    data ^= data >> 8;
+
+    return ParityTable256[data & 0xFFU];
+}
+
+#undef P2
+#undef P4
+#undef P6
+
 #ifdef __cplusplus
 }
 #endif

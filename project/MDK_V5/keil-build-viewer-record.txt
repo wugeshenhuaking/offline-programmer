@@ -32,7 +32,7 @@
       3676          0          0          0         64          0   queue.o
        766          0         24          0         10          0   rtc.o
         36          0        388          0       1024          0   startup_at32f403a_407.o
-      3660          0          0          0          0          0   sw_dp.o
+      4420          0        256          0          0          0   sw_dp.o
        374          0          0          0          0          0   swd_flash.o
       4318          0          0          0          8          0   swd_host.o
        582          0         16          4          0          0   system_at32f403a_407.o
@@ -57,7 +57,7 @@ Memory Map of the image
 
 	Load Region LR_IROM1 
 
-		Execution Region ER_IROM1 (Exec base: 0x08000000, Size: 0x0003CD94, Max: 0x00100000, END)
+		Execution Region ER_IROM1 (Exec base: 0x08000000, Size: 0x0003D18C, Max: 0x00100000, END)
 
 		Execution Region RW_IRAM1 (Exec base: 0x20000000, Size: 0x0000D6A8, Max: 0x00018000, END)
 

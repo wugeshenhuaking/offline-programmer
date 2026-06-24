@@ -151,7 +151,7 @@ static void prog_wdog_callback(TimerHandle_t xTimer)
                 g_prog_timeout_flag = 1;
                 g_programmer_state  = PROGRAMMER_FAILED;
                 g_programmer_trigger = 0;   /* 退出烧录模式，允许重新触发 */
-            g_bin_file_switch = 0;     /* 烧录完成，文件选择归零 */
+                g_bin_file_switch = 0;     /* 烧录完成，文件选择归零 */
                 log_error("TIMEOUT! No progress for %dms, abort.", PROG_WDOG_TIMEOUT_MS);
             }
         }
