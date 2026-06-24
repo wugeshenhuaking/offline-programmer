@@ -1,0 +1,246 @@
+
+=================================================== keil-build-viewer v1.6 ==================================================
+ 
+[Search keil project] 1 item(s)
+	D:\CodeProjects\AT32IDE_Proj\learn_w25q64\project\MDK_V5\learn_w25q64.uvprojx
+
+[User input] 
+[Current folder] D:\CodeProjects\AT32IDE_Proj\learn_w25q64\project\MDK_V5
+[Encoding] 936
+[Keil project path] D:\CodeProjects\AT32IDE_Proj\learn_w25q64\project\MDK_V5\learn_w25q64.uvprojx
+[Keil project name] learn_w25q64.uvprojx
+[Is keil v4] 0
+[target name] learn_w25q64
+[final target name] learn_w25q64
+
+[Device] -AT32F403ARGT7
+[Target name] 
+[Output name] learn_w25q64
+[Output path] .\objects\
+[Listing path] .\listings\
+[Is has pack] 1
+[Is enbale LTO] 0
+[Is has user library] 0
+[Is custom scatter file] 0
+
+[learn_w25q64.uvprojx]  [learn_w25q64]  [-AT32F403ARGT7]  [LTO disable]
+ 
+[memory info]
+[name] IRAM [base addr] 0x20000000 [size] 0x00018000 [type] 1 [off-chip] 0 [is pack] 1 [ID] 2 
+[name] IROM [base addr] 0x08000000 [size] 0x00100000 [type] 2 [off-chip] 0 [is pack] 1 [ID] 3 
+
+
+[map file path] D:\CodeProjects\AT32IDE_Proj\learn_w25q64\project\MDK_V5\listings\learn_w25q64.map
+
+[region info]
+[load region] LR_IROM1
+	[execution region] ER_IROM1, 0x08000000, 0x00100000, 0x0003CD94 [memory type] 2 [memory ID] 3
+
+	[execution region] RW_IRAM1, 0x20000000, 0x00018000, 0x0000D6A8 [memory type] 1 [memory ID] 2
+		[ZI block] addr: 0x20000160, size: 0x0000D548 (54600)
+
+
+[object name max length] 25
+[object path max length] 63
+
+[object in map file]
+[object name] at32f403a_407_acc.o        [path] ..\..\libraries\drivers\src\at32f403a_407_acc.c
+[object name] at32f403a_407_crm.o        [path] ..\..\libraries\drivers\src\at32f403a_407_crm.c
+[object name] at32f403a_407_dma.o        [path] ..\..\libraries\drivers\src\at32f403a_407_dma.c
+[object name] at32f403a_407_gpio.o       [path] ..\..\libraries\drivers\src\at32f403a_407_gpio.c
+[object name] at32f403a_407_int.o        [path] ..\src\at32f403a_407_int.c
+[object name] at32f403a_407_misc.o       [path] ..\..\libraries\drivers\src\at32f403a_407_misc.c
+[object name] at32f403a_407_pwc.o        [path] ..\..\libraries\drivers\src\at32f403a_407_pwc.c
+[object name] at32f403a_407_rtc.o        [path] ..\..\libraries\drivers\src\at32f403a_407_rtc.c
+[object name] at32f403a_407_spi.o        [path] ..\..\libraries\drivers\src\at32f403a_407_spi.c
+[object name] at32f403a_407_tmr.o        [path] ..\..\libraries\drivers\src\at32f403a_407_tmr.c
+[object name] at32f403a_407_usart.o      [path] ..\..\libraries\drivers\src\at32f403a_407_usart.c
+[object name] at32f403a_407_usb.o        [path] ..\..\libraries\drivers\src\at32f403a_407_usb.c
+[object name] at32f403a_407_wk_config.o  [path] ..\src\at32f403a_407_wk_config.c
+[object name] bsp_25qxx.o                [path] ..\..\bsp\bsp_25qxx\bsp_25qxx.c
+[object name] bsp_25qxx_msp.o            [path] ..\..\bsp\bsp_25qxx\bsp_25qxx_msp.c
+[object name] dap.o                      [path] ..\..\DAP\DAP.c
+[object name] diskio.o                   [path] ../src/diskio.c
+[object name] fatfs_disk.o               [path] ../src/fatfs_disk.c
+[object name] ff.o                       [path] ../../middlewares/3rd_party/fatfs/source/ff.c
+[object name] ffsystem.o                 [path] ../../middlewares/3rd_party/fatfs/source/ffsystem.c
+[object name] ffunicode.o                [path] ../../middlewares/3rd_party/fatfs/source/ffunicode.c
+[object name] freertos_app.o             [path] ../src/freertos_app.c
+[object name] heap_4.o                   [path] ../../middlewares/freertos/source/portable/memmang/heap_4.c
+[object name] include_port.o             [path] ../src/include_port.c
+[object name] list.o                     [path] ../../middlewares/freertos/source/list.c
+[object name] main.o                     [path] ..\src\main.c
+[object name] msc_bot_scsi.o             [path] ../src/msc_bot_scsi.c
+[object name] msc_class.o                [path] ../src/msc_class.c
+[object name] msc_desc.o                 [path] ../src/msc_desc.c
+[object name] msc_diskio.o               [path] ../src/msc_diskio.c
+[object name] queue.o                    [path] ../../middlewares/freertos/source/queue.c
+[object name] rtc.o                      [path] ..\src\rtc.c
+[object name] startup_at32f403a_407.o    [path] .\startup_at32f403a_407.s
+[object name] sw_dp.o                    [path] ..\..\DAP\SW_DP.c
+[object name] swd_flash.o                [path] ..\..\DAP_Config\SWD_flash.c
+[object name] swd_host.o                 [path] ..\..\DAP_Config\SWD_host.c
+[object name] system_at32f403a_407.o     [path] ..\..\libraries\cmsis\cm4\device_support\system_at32f403a_407.c
+[object name] task_programmer.o          [path] ..\..\user_task\task_programmer.c
+[object name] tasks.o                    [path] ../../middlewares/freertos/source/tasks.c
+[object name] timers.o                   [path] ../../middlewares/freertos/source/timers.c
+[object name] usb_app.o                  [path] ../src/usb_app.c
+[object name] usbd_core.o                [path] ../../middlewares/usbd_drivers/src/usbd_core.c
+[object name] usbd_int.o                 [path] ../../middlewares/usbd_drivers/src/usbd_int.c
+[object name] usbd_sdr.o                 [path] ../../middlewares/usbd_drivers/src/usbd_sdr.c
+[object name] user_diskio.o              [path] ../src/user_diskio.c
+[object name] user_task.o                [path] ..\..\user_task\user_task.c
+[object name] wk_acc.o                   [path] ..\src\wk_acc.c
+[object name] wk_debug.o                 [path] ..\src\wk_debug.c
+[object name] wk_gpio.o                  [path] ..\src\wk_gpio.c
+[object name] wk_system.o                [path] ..\src\wk_system.c
+[object name] wk_usart.o                 [path] ..\src\wk_usart.c
+[object name] wk_usbfs.o                 [path] ..\src\wk_usbfs.c
+
+[file path in keil project]
+[old name] main.c                     [type] 1   [path] ..\src\main.c
+[old name] at32f403a_407_wk_config.c  [type] 1   [path] ..\src\at32f403a_407_wk_config.c
+[old name] at32f403a_407_int.c        [type] 1   [path] ..\src\at32f403a_407_int.c
+[old name] wk_system.c                [type] 1   [path] ..\src\wk_system.c
+[old name] freertos_app.c             [type] 1   [path] ../src/freertos_app.c
+[old name] include_port.c             [type] 1   [path] ../src/include_port.c
+[old name] wk_debug.c                 [type] 1   [path] ..\src\wk_debug.c
+[old name] wk_spi.c                   [type] 1   [path] ..\src\wk_spi.c
+[old name] wk_usart.c                 [type] 1   [path] ..\src\wk_usart.c
+[old name] wk_gpio.c                  [type] 1   [path] ..\src\wk_gpio.c
+[old name] usb_app.c                  [type] 1   [path] ../src/usb_app.c
+[old name] wk_acc.c                   [type] 1   [path] ..\src\wk_acc.c
+[old name] wk_usbfs.c                 [type] 1   [path] ..\src\wk_usbfs.c
+[old name] diskio.c                   [type] 1   [path] ../src/diskio.c
+[old name] fatfs_disk.c               [type] 1   [path] ../src/fatfs_disk.c
+[old name] user_diskio.c              [type] 1   [path] ../src/user_diskio.c
+[old name] rtc.c                      [type] 1   [path] ..\src\rtc.c
+[old name] at32f403a_407_crm.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_crm.c
+[old name] at32f403a_407_tmr.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_tmr.c
+[old name] at32f403a_407_rtc.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_rtc.c
+[old name] at32f403a_407_gpio.c       [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_gpio.c
+[old name] at32f403a_407_i2c.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_i2c.c
+[old name] at32f403a_407_usart.c      [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_usart.c
+[old name] at32f403a_407_pwc.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_pwc.c
+[old name] at32f403a_407_adc.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_adc.c
+[old name] at32f403a_407_spi.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_spi.c
+[old name] at32f403a_407_dma.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_dma.c
+[old name] at32f403a_407_flash.c      [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_flash.c
+[old name] at32f403a_407_crc.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_crc.c
+[old name] at32f403a_407_wwdt.c       [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_wwdt.c
+[old name] at32f403a_407_wdt.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_wdt.c
+[old name] at32f403a_407_exint.c      [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_exint.c
+[old name] at32f403a_407_misc.c       [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_misc.c
+[old name] at32f403a_407_usb.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_usb.c
+[old name] at32f403a_407_acc.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_acc.c
+[old name] at32f403a_407_can.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_can.c
+[old name] at32f403a_407_dac.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_dac.c
+[old name] at32f403a_407_xmc.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_xmc.c
+[old name] at32f403a_407_emac.c       [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_emac.c
+[old name] at32f403a_407_sdio.c       [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_sdio.c
+[old name] at32f403a_407_debug.c      [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_debug.c
+[old name] at32f403a_407_bpr.c        [type] 1   [path] ..\..\libraries\drivers\src\at32f403a_407_bpr.c
+[old name] startup_at32f403a_407.s    [type] 1   [path] .\startup_at32f403a_407.s
+[old name] system_at32f403a_407.c     [type] 1   [path] ..\..\libraries\cmsis\cm4\device_support\system_at32f403a_407.c
+[old name] bsp_25qxx.c                [type] 1   [path] ..\..\bsp\bsp_25qxx\bsp_25qxx.c
+[old name] bsp_25qxx_msp.c            [type] 1   [path] ..\..\bsp\bsp_25qxx\bsp_25qxx_msp.c
+[old name] msc_diskio.c               [type] 1   [path] ../src/msc_diskio.c
+[old name] msc_class.c                [type] 1   [path] ../src/msc_class.c
+[old name] msc_desc.c                 [type] 1   [path] ../src/msc_desc.c
+[old name] msc_bot_scsi.c             [type] 1   [path] ../src/msc_bot_scsi.c
+[old name] usbd_core.c                [type] 1   [path] ../../middlewares/usbd_drivers/src/usbd_core.c
+[old name] usbd_int.c                 [type] 1   [path] ../../middlewares/usbd_drivers/src/usbd_int.c
+[old name] usbd_sdr.c                 [type] 1   [path] ../../middlewares/usbd_drivers/src/usbd_sdr.c
+[old name] SWD_flash.c                [type] 1   [path] ..\..\DAP_Config\SWD_flash.c
+[old name] SWD_host.c                 [type] 1   [path] ..\..\DAP_Config\SWD_host.c
+[old name] SW_DP.c                    [type] 1   [path] ..\..\DAP\SW_DP.c
+[old name] DAP.c                      [type] 1   [path] ..\..\DAP\DAP.c
+[old name] user_task.c                [type] 1   [path] ..\..\user_task\user_task.c
+[old name] task_programmer.c          [type] 1   [path] ..\..\user_task\task_programmer.c
+[old name] ff.c                       [type] 1   [path] ../../middlewares/3rd_party/fatfs/source/ff.c
+[old name] ffsystem.c                 [type] 1   [path] ../../middlewares/3rd_party/fatfs/source/ffsystem.c
+[old name] ffunicode.c                [type] 1   [path] ../../middlewares/3rd_party/fatfs/source/ffunicode.c
+[old name] croutine.c                 [type] 1   [path] ../../middlewares/freertos/source/croutine.c
+[old name] event_groups.c             [type] 1   [path] ../../middlewares/freertos/source/event_groups.c
+[old name] list.c                     [type] 1   [path] ../../middlewares/freertos/source/list.c
+[old name] queue.c                    [type] 1   [path] ../../middlewares/freertos/source/queue.c
+[old name] tasks.c                    [type] 1   [path] ../../middlewares/freertos/source/tasks.c
+[old name] timers.c                   [type] 1   [path] ../../middlewares/freertos/source/timers.c
+[old name] heap_4.c                   [type] 1   [path] ../../middlewares/freertos/source/portable/memmang/heap_4.c
+[old name] stream_buffer.c            [type] 1   [path] ../../middlewares/freertos/source/stream_buffer.c
+
+[record region info]
+[load region] LR_IROM1
+	[execution region] ER_IROM1, 0x08000000, 0x00100000, 0x0003CD94 [type] 2 [ID] 3
+	[execution region] RW_IRAM1, 0x20000000, 0x00018000, 0x0000D6A8 [type] 1 [ID] 2
+---------------------------------------------------------------------------------------------------------------------------
+                               FILE(s)                              |         RAM (byte)       |       FLASH (byte)       |
+---------------------------------------------------------------------------------------------------------------------------
+..\..\libraries\drivers\src\at32f403a_407_acc.c():                  |           0              |         150              |
+..\..\libraries\drivers\src\at32f403a_407_crm.c():                  |           0              |        1684              |
+..\..\libraries\drivers\src\at32f403a_407_dma.c():                  |           0              |         854              |
+..\..\libraries\drivers\src\at32f403a_407_gpio.c():                 |           0              |         548              |
+..\src\at32f403a_407_int.c():                                       |           0              |          56              |
+..\..\libraries\drivers\src\at32f403a_407_misc.c():                 |           0              |         370              |
+..\..\libraries\drivers\src\at32f403a_407_pwc.c():                  |           0              |          38              |
+..\..\libraries\drivers\src\at32f403a_407_rtc.c():                  |           0              |          84              |
+..\..\libraries\drivers\src\at32f403a_407_spi.c():                  |           0              |         658              |
+..\..\libraries\drivers\src\at32f403a_407_tmr.c():                  |           0              |         230              |
+..\..\libraries\drivers\src\at32f403a_407_usart.c():                |           0              |         676              |
+..\..\libraries\drivers\src\at32f403a_407_usb.c():                  |           6              |        2814              |
+..\src\at32f403a_407_wk_config.c():                                 |           0              |         776              |
+..\..\bsp\bsp_25qxx\bsp_25qxx.c():                                  |           8              |         500              |
+..\..\bsp\bsp_25qxx\bsp_25qxx_msp.c():                              |           2              |        1589              |
+..\..\DAP\DAP.c():                                                  |          56              |         254              |
+../src/diskio.c():                                                  |           0              |         824              |
+../src/fatfs_disk.c():                                              |          13              |         160              |
+../../middlewares/3rd_party/fatfs/source/ff.c():                    |          38              |       14091              |
+../../middlewares/3rd_party/fatfs/source/ffsystem.c():              |           0              |         102              |
+../../middlewares/3rd_party/fatfs/source/ffunicode.c():             |           0              |      175752              |
+../src/freertos_app.c():                                            |       14713              |         868              |
+../../middlewares/freertos/source/portable/memmang/heap_4.c():      |       10272              |        1122              |
+../src/include_port.c():                                            |           9              |        1132              |
+../../middlewares/freertos/source/list.c():                         |           0              |         296              |
+..\src\main.c():                                                    |           0              |          76              |
+../src/msc_bot_scsi.c():                                            |          45              |        3622              |
+../src/msc_class.c():                                               |        4224              |         608              |
+../src/msc_desc.c():                                                |         416              |         790              |
+../src/msc_diskio.c():                                              |       20562              |        1568              |
+../../middlewares/freertos/source/queue.c():                        |          64              |        3676              |
+..\src\rtc.c():                                                     |          10              |         790              |
+.\startup_at32f403a_407.s():                                        |        1024              |         424              |
+..\..\DAP\SW_DP.c():                                                |           0              |        3660              |
+..\..\DAP_Config\SWD_flash.c():                                     |           0              |         374              |
+..\..\DAP_Config\SWD_host.c():                                      |           8              |        4318              |
+..\..\libraries\cmsis\cm4\device_support\system_at32f403a_407.c():  |           4              |         602              |
+..\..\user_task\task_programmer.c():                                |        2072              |        4291              |
+../../middlewares/freertos/source/tasks.c():                        |         480              |        5203              |
+../../middlewares/freertos/source/timers.c():                       |         300              |        1705              |
+../src/usb_app.c():                                                 |         556              |          76              |
+../../middlewares/usbd_drivers/src/usbd_core.c():                   |           0              |        2700              |
+../../middlewares/usbd_drivers/src/usbd_int.c():                    |           0              |        1228              |
+../../middlewares/usbd_drivers/src/usbd_sdr.c():                    |           1              |        2112              |
+../src/user_diskio.c():                                             |          28              |         698              |
+..\..\user_task\user_task.c():                                      |           0              |           8              |
+..\src\wk_acc.c():                                                  |           0              |          36              |
+..\src\wk_debug.c():                                                |           0              |          18              |
+..\src\wk_gpio.c():                                                 |           0              |         192              |
+..\src\wk_system.c():                                               |           4              |         228              |
+..\src\wk_usart.c():                                                |           0              |         340              |
+..\src\wk_usbfs.c():                                                |           0              |          22              |
+---------------------------------------------------------------------------------------------------------------------------
+[memory print mode]: 0
+LR_IROM1
+        RAM 1             [0x20000000 | 0x00018000 (98304)]
+                [zi start] 1   [zi end] 27
+                RW_IRAM1  [0x20000000]|¡ö¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ_______________________| (  53.6 KB /  96.0 KB )  55.9%  
+ 
+        FLASH 1           [0x08000000 | 0x00100000 (1048576)]
+                ER_IROM1  [0x08000000]|¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö_______________________________________| ( 243.3 KB /   1.0 MB )  23.8%  
+ 
+[htm file path] D:\CodeProjects\AT32IDE_Proj\learn_w25q64\project\MDK_V5\objects\learn_w25q64.htm
+Maximum Stack Usage =       2236 bytes + Unknown(Cycles, Untraceable Function Pointers)
+ 
+=============================================================================================================================
+
+run time: 0.236 s
