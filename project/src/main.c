@@ -31,6 +31,7 @@
 #include "wk_spi.h"
 #include "wk_usart.h"
 #include "wk_usbfs.h"
+#include "wk_dma.h"
 #include "wk_gpio.h"
 #include "usb_app.h"
 #include "wk_system.h"
@@ -120,6 +121,17 @@ int main(void)
 
   /* init uart4 function. */
   wk_uart4_init();
+
+  /* init dma1 channel1 */
+  wk_dma1_channel1_init();
+  /* config dma channel transfer parameter */
+  /* user need to modify define values DMAx_CHANNELy_XXX_BASE_ADDR 
+     and DMAx_CHANNELy_BUFFER_SIZE in at32xxx_wk_config.h */
+  wk_dma_channel_config(DMA1_CHANNEL1, 
+                        (uint32_t)&UART4->dt, 
+                        DMA1_CHANNEL1_MEMORY_BASE_ADDR, 
+                        DMA1_CHANNEL1_BUFFER_SIZE);
+  dma_channel_enable(DMA1_CHANNEL1, TRUE);
 
   /* add user code begin 2 */
   /* init w25q64 spi flash (must before usb msc) */

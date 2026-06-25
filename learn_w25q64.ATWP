@@ -65,6 +65,11 @@
         <Parameters>
             <ParametersSub name="RealBaudRate" value="115163"/>
         </Parameters>
+        <Interrupts>
+            <InterruptsSub name="Interrupt_TDBE" value="TRUE"/>
+            <InterruptsSub name="Interrupt_TDC" value="TRUE"/>
+            <InterruptsSub name="Interrupt_IDLE" value="TRUE"/>
+        </Interrupts>
     </UART4>
     <USBFS>
         <Mode>
@@ -113,16 +118,24 @@
             <ModeSub name="FS_Device" value="MSC"/>
         </Mode>
     </USB_DEVICE>
+    <DMA>
+        <UART4_RX>
+            <ParametersSub name="Instance" value="DMA1_Channel1"/>
+            <ParametersSub name="Interrupt_FDT" value="ENABLE"/>
+            <ParametersSub name="Interrupt_HDT" value="ENABLE"/>
+        </UART4_RX>
+    </DMA>
     <NVIC>
         <SVC_Handler>1;0;0;0;0;0</SVC_Handler>
         <PendSV_Handler>1;15;0;1;0;0</PendSV_Handler>
         <SysTick_Handler>1;15;0;1;0;1</SysTick_Handler>
         <FLASH_IRQHandler>0;5;0;1;0;0</FLASH_IRQHandler>
         <CRM_IRQHandler>0;5;0;1;0;0</CRM_IRQHandler>
+        <DMA1_Channel1_IRQHandler>1;5;0;1;0;0</DMA1_Channel1_IRQHandler>
         <SPI2_I2S2EXT_IRQHandler>0;5;0;1;0;0</SPI2_I2S2EXT_IRQHandler>
         <USART1_IRQHandler>0;5;0;1;0;0</USART1_IRQHandler>
         <USBFSWakeUp_IRQHandler>0;5;0;1;0;0</USBFSWakeUp_IRQHandler>
-        <UART4_IRQHandler>0;5;0;1;0;0</UART4_IRQHandler>
+        <UART4_IRQHandler>1;5;0;1;0;0</UART4_IRQHandler>
         <ACC_IRQHandler>0;5;0;1;0;0</ACC_IRQHandler>
         <USBFS_MAPH_IRQHandler>0;5;0;1;0;0</USBFS_MAPH_IRQHandler>
         <USBFS_MAPL_IRQHandler>1;1;0;0;1;1</USBFS_MAPL_IRQHandler>
@@ -200,5 +213,6 @@
         <RankSub RankNum="78" FixPosFlag="FALSE" FuncName="wk_usb_app_init" InstanceName="USB_DEVICE/USB_HOST" CodeSection="usb_app_init" MainDoNotCallFlag="FALSE"/>
         <RankSub RankNum="80" FixPosFlag="FALSE" FuncName="fatfs_disk_init" InstanceName="FATFS" CodeSection="fatfs_app_init" MainDoNotCallFlag="FALSE"/>
         <RankSub RankNum="35" FixPosFlag="FALSE" FuncName="wk_uart4_init" InstanceName="UART4" CodeSection="uart4 function" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="14" FixPosFlag="FALSE" FuncName="wk_dma1_channel1_init" InstanceName="DMA1_Channel1" CodeSection="dma1_channel1_init" MainDoNotCallFlag="FALSE"/>
     </FunctionRankInfo>
 </Root>

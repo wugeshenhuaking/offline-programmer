@@ -124,7 +124,18 @@ void wk_uart4_init(void)
   usart_receiver_enable(UART4, TRUE);
   usart_parity_selection_config(UART4, USART_PARITY_NONE);
 
+  usart_dma_receiver_enable(UART4, TRUE);
+
   usart_hardware_flow_control_set(UART4, USART_HARDWARE_FLOW_NONE);
+
+  /* enable idle interrupt */
+  usart_interrupt_enable(UART4, USART_IDLE_INT, TRUE);
+
+  /* enable transmit data complete interrupt */
+  usart_interrupt_enable(UART4, USART_TDC_INT, TRUE);
+
+  /* enable transmit data buffer empty interrupt */
+  usart_interrupt_enable(UART4, USART_TDBE_INT, TRUE);
 
   /* add user code begin uart4_init 2 */
 

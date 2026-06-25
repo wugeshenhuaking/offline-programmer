@@ -1,8 +1,8 @@
 /* add user code begin Header */
 /**
   **************************************************************************
-  * @file     at32f403a_407_int.h
-  * @brief    header file of main interrupt service routines.
+  * @file     wk_dma.h
+  * @brief    header file of work bench config
   **************************************************************************
   * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
@@ -24,23 +24,23 @@
   */
 /* add user code end Header */
 
-/* define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AT32F403A_407_INT_H
-#define __AT32F403A_407_INT_H
+/* define to prevent recursive inclusion -----------------------------------*/
+#ifndef __WK_DMA_H
+#define __WK_DMA_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* includes ------------------------------------------------------------------*/
-#include "at32f403a_407.h"
+/* includes -----------------------------------------------------------------------*/
+#include "at32f403a_407_wk_config.h"
 
-/* private includes ----------------------------------------------------------*/
+/* private includes -------------------------------------------------------------*/
 /* add user code begin private includes */
 
 /* add user code end private includes */
 
-/* exported types ------------------------------------------------------------*/
+/* exported types -------------------------------------------------------------*/
 /* add user code begin exported types */
 
 /* add user code end exported types */
@@ -56,18 +56,14 @@ extern "C" {
 /* add user code end exported macro */
 
 /* exported functions ------------------------------------------------------- */
-void NMI_Handler(void);
-void HardFault_Handler(void);
-void MemManage_Handler(void);
-void BusFault_Handler(void);
-void UsageFault_Handler(void);
-void DebugMon_Handler(void);
-void SysTick_Handler(void);
 
-void DMA1_Channel1_IRQHandler(void);
-void TMR8_TRG_HALL_TMR14_IRQHandler(void);
-void UART4_IRQHandler(void);
-void USBFS_MAPL_IRQHandler(void);
+  /* init dma1 channel1 */
+  void wk_dma1_channel1_init(void);
+
+  /* config dma channel transfer parameter */
+  /* user need to modify parameters memory_base_addr and buffer_size */
+  void wk_dma_channel_config(dma_channel_type* dmax_channely, uint32_t peripheral_base_addr, uint32_t memory_base_addr, uint16_t buffer_size);
+
 /* add user code begin exported functions */
 
 /* add user code end exported functions */

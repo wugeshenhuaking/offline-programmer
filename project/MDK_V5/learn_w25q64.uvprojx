@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>AT32F403ARGT7, USE_STDPERIPH_DRIVER, AT_START_F403A_V1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\libraries\drivers\inc;..\..\libraries\cmsis\cm4\core_support;..\..\libraries\cmsis\cm4\device_support;..\inc;..\..\bsp;../../middlewares/usbd_drivers/inc;..\..\DAP;..\..\algo;..\..\DAP_Config;..\..\user_task;../../middlewares/3rd_party/fatfs/source;../../middlewares/freertos/source/include;../../middlewares/freertos/source/portable/memmang;../../middlewares/freertos/source/portable/GCC/ARM_CM4F</IncludePath>
+              <IncludePath>..\..\libraries\drivers\inc;..\..\libraries\cmsis\cm4\core_support;..\..\libraries\cmsis\cm4\device_support;..\inc;..\..\bsp;../../middlewares/usbd_drivers/inc;..\..\DAP;..\..\algo;..\..\DAP_Config;..\..\user_task;../../middlewares/3rd_party/fatfs/source;../../middlewares/freertos/source/include;../../middlewares/freertos/source/portable/memmang;../../middlewares/freertos/source/portable/GCC/ARM_CM4F;..\..\component\agile_modbus\inc;..\..\component\agile_modbus\util</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -462,6 +462,11 @@
               <FileName>user_diskio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../src/user_diskio.c</FilePath>
+            </File>
+            <File>
+              <FileName>wk_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\wk_dma.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
@@ -775,6 +780,11 @@
           <GroupName>user_task</GroupName>
           <Files>
             <File>
+              <FileName>log.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\user_task\log.h</FilePath>
+            </File>
+            <File>
               <FileName>user_task.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\user_task\user_task.c</FilePath>
@@ -785,9 +795,9 @@
               <FilePath>..\..\user_task\task_programmer.c</FilePath>
             </File>
             <File>
-              <FileName>log.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\user_task\log.h</FilePath>
+              <FileName>task_modbus_communication.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\user_task\task_modbus_communication.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -853,6 +863,36 @@
               <FileName>stream_buffer.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../middlewares/freertos/source/stream_buffer.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>component/agile_modbus</GroupName>
+          <Files>
+            <File>
+              <FileName>agile_modbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\src\agile_modbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_rtu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\src\agile_modbus_rtu.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_tcp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\src\agile_modbus_tcp.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_slave_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\util\agile_modbus_slave_util.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_slave_util.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\component\agile_modbus\util\agile_modbus_slave_util.h</FilePath>
             </File>
           </Files>
         </Group>

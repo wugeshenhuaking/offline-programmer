@@ -335,6 +335,9 @@ usb_sts_type msc_disk_write(uint8_t lun, uint64_t addr, uint8_t *buf, uint32_t l
       w25q_cache_dirty = 1;
     }
 
+    /* 立即把脏缓存写回 flash，避免断电丢失数据 */
+    flush_sector_cache();
+
     return USB_OK;
   }
 
