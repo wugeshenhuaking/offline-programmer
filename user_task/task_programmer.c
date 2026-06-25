@@ -12,6 +12,10 @@
 #define LOG_TAG "PROG"
 #define LOG_MODULE_LVL LOG_LVL_DEBUG
 #include "log.h"
+
+#define PROGRAMMER_READ_IDCODE_BEFORE_FLASH  1U
+#define PROGRAMMER_LOG_PAGE_DETAIL           1U
+#define PROGRAMMER_VERIFY_STRIDE_PAGES       1U
 /* ===================== 烧录目标 MCU 的 flash 参数 ===================== */
 #define USER_MCU_FLASH_PAGE_SIZE   (1024 * 1)      /* AT32F415 页大小 2KB */
 #define USER_MCU_FLASH_START_ADDR  0x08000000
@@ -134,6 +138,22 @@ static inline uint8_t prog_check_timeout(void)
     return g_prog_timeout_flag;
 }
 
+static inline uint8_t programmer_should_verify_page(uint32_t page_index, uint32_t total_pages)
+{
+#if (PROGRAMMER_VERIFY_STRIDE_PAGES == 0U)
+    (void)page_index;
+    (void)total_pages;
+    return 0U;
+#else
+    if((page_index % PROGRAMMER_VERIFY_STRIDE_PAGES) == 0U)
+    {
+        return 1U;
+    }
+
+    return (page_index + 1U >= total_pages) ? 1U : 0U;
+#endif
+}
+
 /**
  * @brief  看门狗定时器回调（运行在 Timer 服务任务中）
  *         若烧录进行中且 20s 内无进展，则置超时标志、复位状态/触发变量
@@ -167,11 +187,16 @@ static uint8_t programmer_do_flash(void)
     FIL      file;
     FRESULT  fr;
     UINT     br;
+#if (PROGRAMMER_READ_IDCODE_BEFORE_FLASH != 0U)
     uint32_t idcode = 0;
+#endif
     FSIZE_t  file_size;
     uint32_t addr;
     uint32_t programmed = 0;
+    uint32_t total_pages;
+    uint32_t page_index = 0;
 
+#if (PROGRAMMER_READ_IDCODE_BEFORE_FLASH != 0U)
     log_info("Starting SWD...");
     prog_feed_wdog();
 
@@ -188,6 +213,7 @@ static uint8_t programmer_do_flash(void)
     swd_read_idcode(&idcode);
     prog_feed_wdog();
     log_info("IDCODE: 0x%08X", (unsigned int)idcode);
+#endif
 
     /* 3. 根据 g_bin_file_switch 动态生成前缀，在文件夹中查找对应 bin 文件 */
     if(g_bin_file_switch < BIN_SWITCH_MIN || g_bin_file_switch > BIN_SWITCH_MAX)
@@ -217,6 +243,7 @@ static uint8_t programmer_do_flash(void)
     }
     prog_feed_wdog();
     file_size = f_size(&file);
+    total_pages = ((uint32_t)file_size + Flash_Page_Size - 1U) / Flash_Page_Size;
     log_info("Bin size: %lu bytes", (unsigned long)file_size);
 
     if(file_size == 0)
@@ -270,9 +297,13 @@ static uint8_t programmer_do_flash(void)
         }
         prog_feed_wdog();
 
-        uint32_t crc_w = crc32_calc(s_page_buf, Flash_Page_Size);
+        uint32_t crc_w = 0U;
+#if (PROGRAMMER_LOG_PAGE_DETAIL != 0U) || (PROGRAMMER_VERIFY_STRIDE_PAGES != 0U)
+        crc_w = crc32_calc(s_page_buf, Flash_Page_Size);
+#endif
 
         /* 打印：当前烧录地址、有效数据长度、CRC、前16字节 */
+#if (PROGRAMMER_LOG_PAGE_DETAIL != 0U)
         log_debug("Addr=0x%08X Len=%u CRC=0x%08X",
                   (unsigned int)addr, (unsigned)to_read, (unsigned int)crc_w);
         log_debug("  Data[0..15]: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
@@ -280,6 +311,7 @@ static uint8_t programmer_do_flash(void)
                   s_page_buf[4], s_page_buf[5], s_page_buf[6], s_page_buf[7],
                   s_page_buf[8], s_page_buf[9], s_page_buf[10], s_page_buf[11],
                   s_page_buf[12], s_page_buf[13], s_page_buf[14], s_page_buf[15]);
+#endif
 
         error_t pe = target_flash_program_page(addr, s_page_buf, Flash_Page_Size);
         if(pe != ERROR_SUCCESS)
@@ -293,36 +325,45 @@ static uint8_t programmer_do_flash(void)
         prog_feed_wdog();
 
         /* 写后回读校验 */
-        if(!swd_read_memory(addr, s_verify_buf, Flash_Page_Size))
+        if(programmer_should_verify_page(page_index, total_pages))
         {
-            log_error("Readback FAILED at 0x%08X", (unsigned int)addr);
-            f_close(&file);
-            return 8;
-        }
-        prog_feed_wdog();
-        uint32_t crc_r = crc32_calc(s_verify_buf, Flash_Page_Size);
-        if(crc_r == crc_w)
-        {
-            log_debug("  Readback CRC=0x%08X  OK", (unsigned int)crc_r);
-        }
-        else
-        {
-            log_debug("  Readback CRC=0x%08X  MISMATCH!", (unsigned int)crc_r);
-        }
+            if(!swd_read_memory(addr, s_verify_buf, Flash_Page_Size))
+            {
+                log_error("Readback FAILED at 0x%08X", (unsigned int)addr);
+                f_close(&file);
+                return 8;
+            }
+            prog_feed_wdog();
 
-        if(crc_r != crc_w)
-        {
-            log_error("  Verify[0..15]: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
-                      s_verify_buf[0], s_verify_buf[1], s_verify_buf[2], s_verify_buf[3],
-                      s_verify_buf[4], s_verify_buf[5], s_verify_buf[6], s_verify_buf[7],
-                      s_verify_buf[8], s_verify_buf[9], s_verify_buf[10], s_verify_buf[11],
-                      s_verify_buf[12], s_verify_buf[13], s_verify_buf[14], s_verify_buf[15]);
-            f_close(&file);
-            return 9;
+            {
+                uint32_t crc_r = crc32_calc(s_verify_buf, Flash_Page_Size);
+#if (PROGRAMMER_LOG_PAGE_DETAIL != 0U)
+                if(crc_r == crc_w)
+                {
+                    log_debug("  Readback CRC=0x%08X  OK", (unsigned int)crc_r);
+                }
+                else
+                {
+                    log_debug("  Readback CRC=0x%08X  MISMATCH!", (unsigned int)crc_r);
+                }
+#endif
+
+                if(crc_r != crc_w)
+                {
+                    log_error("  Verify[0..15]: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
+                              s_verify_buf[0], s_verify_buf[1], s_verify_buf[2], s_verify_buf[3],
+                              s_verify_buf[4], s_verify_buf[5], s_verify_buf[6], s_verify_buf[7],
+                              s_verify_buf[8], s_verify_buf[9], s_verify_buf[10], s_verify_buf[11],
+                              s_verify_buf[12], s_verify_buf[13], s_verify_buf[14], s_verify_buf[15]);
+                    f_close(&file);
+                    return 9;
+                }
+            }
         }
 
         addr       += Flash_Page_Size;
         programmed += to_read;
+        page_index++;
     }
     log_info("Program done, %lu bytes", (unsigned long)programmed);
 
