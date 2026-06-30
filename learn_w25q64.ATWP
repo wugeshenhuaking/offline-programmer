@@ -98,6 +98,7 @@
             <ParametersSub name="MCU_SRAM_SIZE" value="98304"/>
             <ParametersSub name="configCPU_CLOCK_HZ" value="240000000"/>
             <ParametersSub name="configUSE_RECURSIVE_MUTEXES" value="1"/>
+            <ParametersSub name="TOTAL_HEAP_SIZE" value="20480"/>
         </Parameters>
         <Tasks>
             <ParametersGroup>
@@ -122,7 +123,6 @@
         <UART4_RX>
             <ParametersSub name="Instance" value="DMA1_Channel1"/>
             <ParametersSub name="Interrupt_FDT" value="ENABLE"/>
-            <ParametersSub name="Interrupt_HDT" value="ENABLE"/>
         </UART4_RX>
     </DMA>
     <NVIC>
@@ -212,7 +212,7 @@
         <RankSub RankNum="71" FixPosFlag="FALSE" FuncName="wk_usbfs_init" InstanceName="USBFS" CodeSection="usbfs function" MainDoNotCallFlag="FALSE"/>
         <RankSub RankNum="78" FixPosFlag="FALSE" FuncName="wk_usb_app_init" InstanceName="USB_DEVICE/USB_HOST" CodeSection="usb_app_init" MainDoNotCallFlag="FALSE"/>
         <RankSub RankNum="80" FixPosFlag="FALSE" FuncName="fatfs_disk_init" InstanceName="FATFS" CodeSection="fatfs_app_init" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="35" FixPosFlag="FALSE" FuncName="wk_uart4_init" InstanceName="UART4" CodeSection="uart4 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="14" FixPosFlag="FALSE" FuncName="wk_dma1_channel1_init" InstanceName="DMA1_Channel1" CodeSection="dma1_channel1_init" MainDoNotCallFlag="FALSE"/>
+        <RankSub RankNum="35" FixPosFlag="FALSE" FuncName="wk_uart4_init" InstanceName="UART4" CodeSection="uart4 function" MainDoNotCallFlag="TRUE"/>
+        <RankSub RankNum="14" FixPosFlag="FALSE" FuncName="wk_dma1_channel1_init" InstanceName="DMA1_Channel1" CodeSection="dma1_channel1_init" MainDoNotCallFlag="TRUE"/>
     </FunctionRankInfo>
 </Root>

@@ -25,9 +25,11 @@
 /* add user code end Header */
 
 #include "wk_system.h"
+#include "freertos_app.h"
 
 /* global variable */
 volatile uint32_t timebase_ticks;
+static SemaphoreHandle_t s_debug_printf_mutex;
 
 /**
   * @brief  this function is called to increment a global variable "timebase_ticks"
@@ -107,6 +109,55 @@ __WEAK void wk_timebase_handler(void)
     tmr_flag_clear(TMR14, TMR_OVF_FLAG);
     wk_timebase_increase();
   }
+}
+
+void wk_debug_printf_init(void)
+{
+  if(s_debug_printf_mutex == NULL)
+  {
+    s_debug_printf_mutex = xSemaphoreCreateRecursiveMutex();
+  }
+}
+
+void wk_debug_lock(void)
+{
+  if((s_debug_printf_mutex != NULL) &&
+     (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED))
+  {
+    (void)xSemaphoreTakeRecursive(s_debug_printf_mutex, portMAX_DELAY);
+  }
+}
+
+void wk_debug_unlock(void)
+{
+  if((s_debug_printf_mutex != NULL) &&
+     (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED))
+  {
+    (void)xSemaphoreGiveRecursive(s_debug_printf_mutex);
+  }
+}
+
+int wk_debug_vprintf(const char *fmt, va_list args)
+{
+  int rc;
+
+  wk_debug_lock();
+  rc = vprintf(fmt, args);
+  wk_debug_unlock();
+
+  return rc;
+}
+
+int wk_debug_printf(const char *fmt, ...)
+{
+  int rc;
+  va_list args;
+
+  va_start(args, fmt);
+  rc = wk_debug_vprintf(fmt, args);
+  va_end(args);
+
+  return rc;
 }
 
 /* support printf function, usemicrolib is unnecessary */

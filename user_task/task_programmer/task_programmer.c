@@ -1,5 +1,6 @@
 #include "freertos_app.h"
 #include "task_programmer.h"
+#include "task_modbus\task_modbus_communication.h"
 #include "ff.h"
 #include <stdio.h>
 #include <string.h>
@@ -9,12 +10,12 @@
 #include "AT32F415_128.c"
 
 
-#define LOG_TAG "PROG"
+#define LOG_TAG "TASK_PROG"
 #define LOG_MODULE_LVL LOG_LVL_DEBUG
 #include "log.h"
 
 #define PROGRAMMER_READ_IDCODE_BEFORE_FLASH  1U
-#define PROGRAMMER_LOG_PAGE_DETAIL           1U
+#define PROGRAMMER_LOG_PAGE_DETAIL           0U
 #define PROGRAMMER_VERIFY_STRIDE_PAGES       1U
 /* ===================== 烧录目标 MCU 的 flash 参数 ===================== */
 #define USER_MCU_FLASH_PAGE_SIZE   (1024 * 1)      /* AT32F415 页大小 2KB */
@@ -45,6 +46,8 @@ volatile uint8_t g_bin_file_switch = 0;
 
 /* 烧录状态 */
 volatile programmer_state_t g_programmer_state = PROGRAMMER_IDLE;
+
+static uint8_t s_active_bin_file_switch = 0;
 
 /* 读文件缓冲区（按页大小，静态分配避免占用任务栈） */
 static uint8_t s_page_buf[USER_MCU_FLASH_PAGE_SIZE];
@@ -170,8 +173,7 @@ static void prog_wdog_callback(TimerHandle_t xTimer)
             {
                 g_prog_timeout_flag = 1;
                 g_programmer_state  = PROGRAMMER_FAILED;
-                g_programmer_trigger = 0;   /* 退出烧录模式，允许重新触发 */
-                g_bin_file_switch = 0;     /* 烧录完成，文件选择归零 */
+                modbus_programmer_registers_clear();
                 log_error("TIMEOUT! No progress for %dms, abort.", PROG_WDOG_TIMEOUT_MS);
             }
         }
@@ -216,14 +218,14 @@ static uint8_t programmer_do_flash(void)
 #endif
 
     /* 3. 根据 g_bin_file_switch 动态生成前缀，在文件夹中查找对应 bin 文件 */
-    if(g_bin_file_switch < BIN_SWITCH_MIN || g_bin_file_switch > BIN_SWITCH_MAX)
+    if(s_active_bin_file_switch < BIN_SWITCH_MIN || s_active_bin_file_switch > BIN_SWITCH_MAX)
     {
         log_error("Invalid switch=%u (must be %d..%d)",
-                  (unsigned)g_bin_file_switch, BIN_SWITCH_MIN, BIN_SWITCH_MAX);
+                  (unsigned)s_active_bin_file_switch, BIN_SWITCH_MIN, BIN_SWITCH_MAX);
         return 2;
     }
     char prefix[4];
-    snprintf(prefix, sizeof(prefix), "%02u", (unsigned)g_bin_file_switch);
+    snprintf(prefix, sizeof(prefix), "%02u", (unsigned)s_active_bin_file_switch);
 
     char bin_path[256];
     fr = find_bin_file_by_prefix(PROGRAMMER_BIN_FOLDER, prefix, bin_path, sizeof(bin_path));
@@ -234,7 +236,7 @@ static uint8_t programmer_do_flash(void)
         return 2;
     }
 
-    log_info("Bin switch=%u, path=%s", (unsigned)g_bin_file_switch, bin_path);
+    log_info("Bin switch=%u, path=%s", (unsigned)s_active_bin_file_switch, bin_path);
     fr = f_open(&file, bin_path, FA_READ);
     if(fr != FR_OK)
     {
@@ -384,19 +386,31 @@ void task_programmer_func(void *pvParameters)
     {
         if(g_programmer_trigger == 1)
         {
+            uint8_t requested_bin_switch;
+
+            taskENTER_CRITICAL();
+            requested_bin_switch = g_bin_file_switch;
+            g_programmer_trigger = 0;
+            if(requested_bin_switch >= BIN_SWITCH_MIN && requested_bin_switch <= BIN_SWITCH_MAX)
+            {
+                g_programmer_state = PROGRAMMER_BUSY;
+            }
+            taskEXIT_CRITICAL();
+
             /* 校验 g_bin_file_switch 必须在有效范围内，否则不烧录 */
-            if(g_bin_file_switch < BIN_SWITCH_MIN || g_bin_file_switch > BIN_SWITCH_MAX)
+            if(requested_bin_switch < BIN_SWITCH_MIN || requested_bin_switch > BIN_SWITCH_MAX)
             {
                 log_error("g_bin_file_switch=%u, must be %d..%d, abort.",
-                          (unsigned)g_bin_file_switch, BIN_SWITCH_MIN, BIN_SWITCH_MAX);
-                g_programmer_trigger = 0;
+                          (unsigned)requested_bin_switch, BIN_SWITCH_MIN, BIN_SWITCH_MAX);
+                modbus_programmer_registers_clear();
                 vTaskDelay(pdMS_TO_TICKS(100));
                 continue;
             }
 
-            g_programmer_state = PROGRAMMER_BUSY;
+            s_active_bin_file_switch = requested_bin_switch;
             g_prog_timeout_flag = 0;
             prog_feed_wdog();
+            log_info("Triggered by Modbus: bin_switch=%u", (unsigned)s_active_bin_file_switch);
 
             /* 启动进度看门狗（周期 1s） */
             if(s_prog_wdog_timer != NULL)
@@ -445,8 +459,8 @@ void task_programmer_func(void *pvParameters)
                 g_programmer_state = PROGRAMMER_FAILED;
                 log_error("FAILED (%u)", (unsigned)ret);
             }
-            g_programmer_trigger = 0;   /* 退出烧录模式，允许重新触发 */
-            g_bin_file_switch = 0;     /* 烧录完成，文件选择归零 */
+            s_active_bin_file_switch = 0;
+            modbus_programmer_registers_clear();
         }
         vTaskDelay(pdMS_TO_TICKS(100));
     }
@@ -467,10 +481,14 @@ void task_programmer_create(void)
 #endif
 
   /* create task_programmer task */
-  xTaskCreate(task_programmer_func,
+  BaseType_t ret = xTaskCreate(task_programmer_func,
               "task_programmer",
               2048,
               NULL,
               1,
               &task_programmer_handle);
+  if(ret != pdPASS)
+  {
+    printf("[ERROR] xTaskCreate task_programmer FAILED! heap not enough?\r\n");
+  }
 }

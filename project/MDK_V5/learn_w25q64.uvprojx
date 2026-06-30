@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>AT32F403ARGT7, USE_STDPERIPH_DRIVER, AT_START_F403A_V1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\libraries\drivers\inc;..\..\libraries\cmsis\cm4\core_support;..\..\libraries\cmsis\cm4\device_support;..\inc;..\..\bsp;../../middlewares/usbd_drivers/inc;..\..\DAP;..\..\algo;..\..\DAP_Config;..\..\user_task;../../middlewares/3rd_party/fatfs/source;../../middlewares/freertos/source/include;../../middlewares/freertos/source/portable/memmang;../../middlewares/freertos/source/portable/GCC/ARM_CM4F;..\..\component\agile_modbus\inc;..\..\component\agile_modbus\util</IncludePath>
+              <IncludePath>..\..\libraries\drivers\inc;..\..\libraries\cmsis\cm4\core_support;..\..\libraries\cmsis\cm4\device_support;..\inc;..\..\bsp;../../middlewares/usbd_drivers/inc;..\..\DAP;..\..\algo;..\..\DAP_Config;..\..\user_task;..\..\component\agile_modbus\inc;..\..\component\agile_modbus\util;../../middlewares/3rd_party/fatfs/source;../../middlewares/freertos/source/include;../../middlewares/freertos/source/portable/memmang;../../middlewares/freertos/source/portable/GCC/ARM_CM4F</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -621,26 +621,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>bsp\25qx</GroupName>
-          <Files>
-            <File>
-              <FileName>bsp_25qxx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\bsp_25qxx\bsp_25qxx.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_25qxx.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\bsp\bsp_25qxx\bsp_25qxx.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_25qxx_msp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\bsp_25qxx\bsp_25qxx_msp.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>usbd_class</GroupName>
           <Files>
             <File>
@@ -682,6 +662,36 @@
               <FileName>usbd_sdr.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../middlewares/usbd_drivers/src/usbd_sdr.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>component/agile_modbus</GroupName>
+          <Files>
+            <File>
+              <FileName>agile_modbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\src\agile_modbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_rtu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\src\agile_modbus_rtu.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_tcp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\src\agile_modbus_tcp.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_slave_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\component\agile_modbus\util\agile_modbus_slave_util.c</FilePath>
+            </File>
+            <File>
+              <FileName>agile_modbus_slave_util.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\component\agile_modbus\util\agile_modbus_slave_util.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -777,6 +787,41 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>bsp/25qx</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_25qxx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\bsp\bsp_25qxx\bsp_25qxx.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_25qxx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\bsp\bsp_25qxx\bsp_25qxx.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_25qxx_msp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\bsp\bsp_25qxx\bsp_25qxx_msp.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>bsp/usart</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\bsp\bsp_usart\bsp_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\bsp\bsp_usart\bsp_usart.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>user_task</GroupName>
           <Files>
             <File>
@@ -789,15 +834,55 @@
               <FileType>1</FileType>
               <FilePath>..\..\user_task\user_task.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>user_task/task_programmer</GroupName>
+          <Files>
             <File>
               <FileName>task_programmer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\user_task\task_programmer.c</FilePath>
+              <FilePath>..\..\user_task\task_programmer\task_programmer.c</FilePath>
             </File>
+            <File>
+              <FileName>task_programmer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\user_task\task_programmer\task_programmer.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>user_task/task_modbus</GroupName>
+          <Files>
             <File>
               <FileName>task_modbus_communication.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\user_task\task_modbus_communication.c</FilePath>
+              <FilePath>..\..\user_task\task_modbus\task_modbus_communication.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_modbus_communication.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\user_task\task_modbus\task_modbus_communication.h</FilePath>
+            </File>
+            <File>
+              <FileName>bits.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\user_task\task_modbus\bits.c</FilePath>
+            </File>
+            <File>
+              <FileName>input_bits.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\user_task\task_modbus\input_bits.c</FilePath>
+            </File>
+            <File>
+              <FileName>input_registers.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\user_task\task_modbus\input_registers.c</FilePath>
+            </File>
+            <File>
+              <FileName>registers.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\user_task\task_modbus\registers.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -863,36 +948,6 @@
               <FileName>stream_buffer.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../middlewares/freertos/source/stream_buffer.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>component/agile_modbus</GroupName>
-          <Files>
-            <File>
-              <FileName>agile_modbus.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\component\agile_modbus\src\agile_modbus.c</FilePath>
-            </File>
-            <File>
-              <FileName>agile_modbus_rtu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\component\agile_modbus\src\agile_modbus_rtu.c</FilePath>
-            </File>
-            <File>
-              <FileName>agile_modbus_tcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\component\agile_modbus\src\agile_modbus_tcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>agile_modbus_slave_util.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\component\agile_modbus\util\agile_modbus_slave_util.c</FilePath>
-            </File>
-            <File>
-              <FileName>agile_modbus_slave_util.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\component\agile_modbus\util\agile_modbus_slave_util.h</FilePath>
             </File>
           </Files>
         </Group>

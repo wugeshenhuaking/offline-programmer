@@ -63,6 +63,59 @@
 /* private user code ---------------------------------------------------------*/
 /* add user code begin 0 */
 
+typedef struct
+{
+  uint32_t magic;
+  uint32_t exc_return;
+  uint32_t msp;
+  uint32_t psp;
+  uint32_t r0;
+  uint32_t r1;
+  uint32_t r2;
+  uint32_t r3;
+  uint32_t r12;
+  uint32_t lr;
+  uint32_t pc;
+  uint32_t xpsr;
+  uint32_t cfsr;
+  uint32_t hfsr;
+  uint32_t dfsr;
+  uint32_t afsr;
+  uint32_t mmfar;
+  uint32_t bfar;
+  uint32_t shcsr;
+} hardfault_info_t;
+
+volatile hardfault_info_t g_hardfault_info;
+
+static void hardfault_save_context(uint32_t *stack_frame, uint32_t exc_return)
+{
+  g_hardfault_info.magic = 0x48464C54U; /* 'HFLT' */
+  g_hardfault_info.exc_return = exc_return;
+  g_hardfault_info.msp = __get_MSP();
+  g_hardfault_info.psp = __get_PSP();
+
+  if(stack_frame != 0)
+  {
+    g_hardfault_info.r0 = stack_frame[0];
+    g_hardfault_info.r1 = stack_frame[1];
+    g_hardfault_info.r2 = stack_frame[2];
+    g_hardfault_info.r3 = stack_frame[3];
+    g_hardfault_info.r12 = stack_frame[4];
+    g_hardfault_info.lr = stack_frame[5];
+    g_hardfault_info.pc = stack_frame[6];
+    g_hardfault_info.xpsr = stack_frame[7];
+  }
+
+  g_hardfault_info.cfsr = SCB->CFSR;
+  g_hardfault_info.hfsr = SCB->HFSR;
+  g_hardfault_info.dfsr = SCB->DFSR;
+  g_hardfault_info.afsr = SCB->AFSR;
+  g_hardfault_info.mmfar = SCB->MMFAR;
+  g_hardfault_info.bfar = SCB->BFAR;
+  g_hardfault_info.shcsr = SCB->SHCSR;
+}
+
 /* add user code end 0 */
 
 /* external variables ---------------------------------------------------------*/
@@ -91,12 +144,25 @@ void NMI_Handler(void)
   * @param  none
   * @retval none
   */
-void HardFault_Handler(void)
+__attribute__((naked)) void HardFault_Handler(void)
+{
+  __asm volatile
+  (
+    "tst lr, #4        \n"
+    "ite eq            \n"
+    "mrseq r0, msp     \n"
+    "mrsne r0, psp     \n"
+    "mov r1, lr        \n"
+    "b HardFault_Handler_C \n"
+  );
+}
+
+void HardFault_Handler_C(uint32_t *stack_frame, uint32_t exc_return)
 {
   /* add user code begin HardFault_IRQ 0 */
-
+  hardfault_save_context(stack_frame, exc_return);
   /* add user code end HardFault_IRQ 0 */
-  /* go to infinite loop when hard fault exception occurs */
+
   while (1)
   {
     /* add user code begin W1_HardFault_IRQ 0 */

@@ -61,9 +61,6 @@ void wk_dma1_channel1_init(void)
   /* enable dma1 channel1 full data transfer interrupt */
   dma_interrupt_enable(DMA1_CHANNEL1, DMA_FDT_INT, TRUE);
 
-  /* enable dma1 channel1 half data transfer interrupt */
-  dma_interrupt_enable(DMA1_CHANNEL1, DMA_HDT_INT, TRUE);
-
   /* add user code begin dma1_channel1 1 */
 
   /* add user code end dma1_channel1 1 */

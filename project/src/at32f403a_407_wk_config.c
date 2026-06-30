@@ -224,10 +224,10 @@ void wk_nvic_config(void)
   NVIC_SetPriority(DebugMonitor_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
   NVIC_SetPriority(PendSV_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 15, 0));
   NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 15, 0));
-  nvic_irq_enable(DMA1_Channel1_IRQn, 5, 0);
-  nvic_irq_enable(TMR8_TRG_HALL_TMR14_IRQn, 0, 0);
-  nvic_irq_enable(UART4_IRQn, 5, 0);
-  nvic_irq_enable(USBFS_MAPL_IRQn, 1, 0);
+  nvic_irq_enable(DMA1_Channel1_IRQn, 6, 0);   /* 与 bsp_usart_init 一致，避免重复配置冲突 */
+  nvic_irq_enable(TMR8_TRG_HALL_TMR14_IRQn, 6, 0);  /* TMR14 时基，降到安全优先级(>=5) */
+  nvic_irq_enable(UART4_IRQn, 6, 0);           /* 与 bsp_usart_init 一致 */
+  nvic_irq_enable(USBFS_MAPL_IRQn, 6, 0);      /* USB 中断也降到安全优先级 */
 }
 
 /* add user code begin 1 */

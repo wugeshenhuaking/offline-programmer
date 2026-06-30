@@ -41,7 +41,7 @@
 /* private includes ----------------------------------------------------------*/
 /* add user code begin private includes */
 #include "bsp_25qxx\bsp_25qxx.h"
-
+#include "bsp_usart\bsp_usart.h"
 /* add user code end private includes */
 
 /* private typedef -----------------------------------------------------------*/
@@ -106,6 +106,7 @@ int main(void)
 
   /* init usart1 function. */
   wk_usart1_init();
+  wk_debug_printf_init();
 
   /* init acc function. */
   wk_acc_init();
@@ -118,20 +119,6 @@ int main(void)
 
   /* init fatfs function. */
   fatfs_disk_init();
-
-  /* init uart4 function. */
-  wk_uart4_init();
-
-  /* init dma1 channel1 */
-  wk_dma1_channel1_init();
-  /* config dma channel transfer parameter */
-  /* user need to modify define values DMAx_CHANNELy_XXX_BASE_ADDR 
-     and DMAx_CHANNELy_BUFFER_SIZE in at32xxx_wk_config.h */
-  wk_dma_channel_config(DMA1_CHANNEL1, 
-                        (uint32_t)&UART4->dt, 
-                        DMA1_CHANNEL1_MEMORY_BASE_ADDR, 
-                        DMA1_CHANNEL1_BUFFER_SIZE);
-  dma_channel_enable(DMA1_CHANNEL1, TRUE);
 
   /* add user code begin 2 */
   /* init w25q64 spi flash (must before usb msc) */

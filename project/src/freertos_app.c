@@ -26,6 +26,8 @@
 
 /* private define ------------------------------------------------------------*/
 /* add user code begin private define */
+#define MY_TASK01_VERBOSE_LOG 0
+#define MY_TASK01_HEARTBEAT_LOG 1
 
 /* add user code end private define */
 
@@ -214,12 +216,14 @@ void my_task01_func(void *pvParameters)
     /* func_25qxx_init已在main.c中调用，此处不再重复 */
     /* func_25qxx_test(); */  /* 如需测试可取消注释 */
     uint32_t cnt = 0;
+    TickType_t next_heartbeat = 0;
     /* 挂载只做一次 */
     FRESULT fr = f_mount(&s_flash_fatfs, "0:", 1);
     if(fr != FR_OK)
     {
         printf("FatFs mount failed: %u\r\n", (unsigned)fr);
     }
+    printf("[SYS] my_task01 start\r\n");
   /* add user code end my_task01_func 2 */
 
   /* Infinite loop */
@@ -230,13 +234,21 @@ void my_task01_func(void *pvParameters)
     wk_usb_app_task();
 
   /* add user code begin my_task01_func 1 */
-    if(xTaskGetTickCount() >= s_flash_next_scan_tick)
+    if((MY_TASK01_VERBOSE_LOG != 0) && (xTaskGetTickCount() >= s_flash_next_scan_tick))
     {
       dump_flash_file_list();
       s_flash_next_scan_tick = xTaskGetTickCount() + pdMS_TO_TICKS(5000);
     }
 
-    printf("hello cnt = %lu\r\n",(unsigned long)cnt++);
+    if(MY_TASK01_VERBOSE_LOG != 0)
+    {
+      printf("hello cnt = %lu\r\n",(unsigned long)cnt++);
+    }
+    if((MY_TASK01_HEARTBEAT_LOG != 0) && (xTaskGetTickCount() >= next_heartbeat))
+    {
+      printf("[SYS] alive %lu\r\n", (unsigned long)cnt++);
+      next_heartbeat = xTaskGetTickCount() + pdMS_TO_TICKS(3000);
+    }
     vTaskDelay(pdMS_TO_TICKS(1000));
 
   /* add user code end my_task01_func 1 */
