@@ -173,6 +173,7 @@ static void prog_wdog_callback(TimerHandle_t xTimer)
             {
                 g_prog_timeout_flag = 1;
                 g_programmer_state  = PROGRAMMER_FAILED;
+                modbus_programmer_status_set(MODBUS_PROGRAMMER_STATUS_FAILED);
                 modbus_programmer_registers_clear();
                 log_error("TIMEOUT! No progress for %dms, abort.", PROG_WDOG_TIMEOUT_MS);
             }
@@ -402,12 +403,14 @@ void task_programmer_func(void *pvParameters)
             {
                 log_error("g_bin_file_switch=%u, must be %d..%d, abort.",
                           (unsigned)requested_bin_switch, BIN_SWITCH_MIN, BIN_SWITCH_MAX);
+                modbus_programmer_status_set(MODBUS_PROGRAMMER_STATUS_FAILED);
                 modbus_programmer_registers_clear();
                 vTaskDelay(pdMS_TO_TICKS(100));
                 continue;
             }
 
             s_active_bin_file_switch = requested_bin_switch;
+            modbus_programmer_status_set(MODBUS_PROGRAMMER_STATUS_BUSY);
             g_prog_timeout_flag = 0;
             prog_feed_wdog();
             log_info("Triggered by Modbus: bin_switch=%u", (unsigned)s_active_bin_file_switch);
@@ -447,16 +450,19 @@ void task_programmer_func(void *pvParameters)
             if(ret == 0)
             {
                 g_programmer_state = PROGRAMMER_DONE;
+                modbus_programmer_status_set(MODBUS_PROGRAMMER_STATUS_DONE);
                 log_info("SUCCESS");
             }
             else if(ret == 10)
             {
                 /* 超时：状态/触发变量已在看门狗回调中复位，这里补充打印 */
+                modbus_programmer_status_set(MODBUS_PROGRAMMER_STATUS_FAILED);
                 log_error("FAILED (timeout)");
             }
             else
             {
                 g_programmer_state = PROGRAMMER_FAILED;
+                modbus_programmer_status_set(MODBUS_PROGRAMMER_STATUS_FAILED);
                 log_error("FAILED (%u)", (unsigned)ret);
             }
             s_active_bin_file_switch = 0;

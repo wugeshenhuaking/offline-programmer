@@ -10,8 +10,13 @@ static uint16_t _tab_registers[10] = {0};
 #define PROGRAMMER_HR_ENABLE_INDEX      0
 #define PROGRAMMER_HR_BIN_INDEX         1
 #define PROGRAMMER_HR_TRIGGER_INDEX     2
+#define PROGRAMMER_HR_STATUS_INDEX      9
 #define PROGRAMMER_HR_ENABLE_VALUE      0xFFFFU
 #define PROGRAMMER_HR_TRIGGER_VALUE     1U
+#define PROGRAMMER_HR_STATUS_IDLE       0x0000U
+#define PROGRAMMER_HR_STATUS_BUSY       0x0001U
+#define PROGRAMMER_HR_STATUS_DONE       0x0002U
+#define PROGRAMMER_HR_STATUS_FAILED     0x0003U
 
 static uint8_t programmer_hr_to_bin_switch(uint16_t hr_value)
 {
@@ -41,10 +46,22 @@ static void apply_programmer_control_registers(void)
 
     if ((_tab_registers[PROGRAMMER_HR_TRIGGER_INDEX] == PROGRAMMER_HR_TRIGGER_VALUE) &&
         (bin_switch != 0U)) {
+        _tab_registers[PROGRAMMER_HR_STATUS_INDEX] = PROGRAMMER_HR_STATUS_IDLE;
         g_programmer_trigger = 1U;
     } else {
         g_programmer_trigger = 0U;
     }
+}
+
+void modbus_programmer_status_set(uint16_t status)
+{
+    if (status > PROGRAMMER_HR_STATUS_FAILED) {
+        status = PROGRAMMER_HR_STATUS_FAILED;
+    }
+
+    taskENTER_CRITICAL();
+    _tab_registers[PROGRAMMER_HR_STATUS_INDEX] = status;
+    taskEXIT_CRITICAL();
 }
 
 void modbus_programmer_registers_clear(void)
@@ -81,7 +98,13 @@ static int set_map_buf(int index, int len, void *buf, int bufsz)
 
     taskENTER_CRITICAL();
     for (int i = 0; i < len; i++) {
-        _tab_registers[index + i] = ptr[index + i];
+        int reg_index = index + i;
+
+        if (reg_index == PROGRAMMER_HR_STATUS_INDEX) {
+            continue;
+        }
+
+        _tab_registers[reg_index] = ptr[reg_index];
     }
     apply_programmer_control_registers();
     taskEXIT_CRITICAL();
